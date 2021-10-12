@@ -7,3 +7,5 @@ QGIS Rosreestr search plugin
 Search to Public Cadastral Map of Rosreestr
 
 <https://pkk.rosreestr.ru/>
+
+<div style="text-align:center"><img src="scrn.png" alt="Lat Lon Tools Plugin"></div>
