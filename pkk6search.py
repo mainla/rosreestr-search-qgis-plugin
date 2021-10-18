@@ -86,26 +86,22 @@ def pkk6_search(cnum, pkklink, cnumid):
         else:
             pass
         
-        userp = os.path.expanduser('~')
-        
-        userp = userp.replace('\\', '/')
-        
         try:
-            urllib.request.urlretrieve(imgURL, userp + '/AppData/Roaming/QGIS/QGIS3/profiles/default/python/plugins/rosreestr-search-qgis-plugin-master/' + 'pkk6' + '.png')
+            urllib.request.urlretrieve(imgURL, os.path.dirname(__file__) + 'pkk6' + '.png')
         except:
             QMessageBox.information(iface.mainWindow(),
                                     cnum,
                                     'HTTP Error 503 | Для загрузки растра повторите ввод')
-            os.remove(userp + '/AppData/Roaming/QGIS/QGIS3/profiles/default/python/plugins/rosreestr-search-qgis-plugin-master/pkk6.png')
+            os.remove(os.path.dirname(__file__) + 'pkk6' + '.png')
         
-        if os.path.exists(userp + '/AppData/Roaming/QGIS/QGIS3/profiles/default/python/plugins/rosreestr-search-qgis-plugin-master/pkk6.png'):        
-            rast = gdal.Open(userp + '/AppData/Roaming/QGIS/QGIS3/profiles/default/python/plugins/rosreestr-search-qgis-plugin-master/pkk6.png')                
-            with open (userp + '/AppData/Roaming/QGIS/QGIS3/profiles/default/python/plugins/rosreestr-search-qgis-plugin-master/' + 'pkk6' + '.pgw', 'w') as target:
+        if os.path.exists(os.path.dirname(__file__) + 'pkk6' + '.png'):        
+            rast = gdal.Open(os.path.dirname(__file__) + 'pkk6' + '.png')                
+            with open (os.path.dirname(__file__) + 'pkk6' + '.pgw', 'w') as target:
                 pxs = str((float(xmax) - float(xmin)) / int(rast.RasterXSize))    
                 xminpng = str(xmin + float(pxs) / 2)   
                 ymaxpng = str(ymax - float(pxs) / 2)
                 target.write(pxs + '\n' + '0\n0\n' + '-' + pxs + '\n'+ xminpng + '\n' + ymaxpng)                    
-            rastlr = iface.addRasterLayer(userp + '/AppData/Roaming/QGIS/QGIS3/profiles/default/python/plugins/rosreestr-search-qgis-plugin-master/pkk6.png', 'pkk6_raster')                
+            rastlr = iface.addRasterLayer(os.path.dirname(__file__) + 'pkk6' + '.png', 'pkk6_raster')                
             rastlr.setCrs(QgsCoordinateReferenceSystem('EPSG:3857'))               
             if '/1/' in pkklink:
                 rastlr.renderer().setOpacity(0.5)
