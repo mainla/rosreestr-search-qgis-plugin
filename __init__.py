@@ -21,8 +21,7 @@ class Pkk6Search:
         self.iface = iface
 
     def initGui(self):
-        self.action = (QAction(QIcon(os.path.expanduser('~') + 
-            '\\AppData\\Roaming\\QGIS\\QGIS3\\profiles\\default\\python\\plugins\\rosreestr-search-qgis-plugin-master\\icon.png'),
+        self.action = (QAction(QIcon(os.path.dirname(__file__) + "/icon.png"),
             'Поиск по Публичной кадастровой карте',
             self.iface.mainWindow()))
         self.action.triggered.connect(self.run)
