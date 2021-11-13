@@ -4,7 +4,7 @@
 import os
 import requests
 import urllib.request
-import gdal
+from .osgeo import gdal
 from PyQt5.QtWidgets import QMessageBox
 from qgis.utils import iface
 from qgis.core import *
