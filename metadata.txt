@@ -2,6 +2,7 @@
 name=rosreestr-search-qgis-plugin
 description=Rosreestr search qgis plugin
 about=Search to Public Cadastral Map of Rosreestr
+      https://pkk.rosreestr.ru/
       Поиск по Публичной кадастровой карте (ЗУ, ОКС)
 version=1.2
 qgisMinimumVersion=3.0
