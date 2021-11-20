@@ -4,7 +4,7 @@
 import os
 import requests
 import urllib.request
-import gdal
+from .osgeo import gdal
 from PyQt5.QtWidgets import QMessageBox
 from qgis.utils import iface
 from qgis.core import *
@@ -87,21 +87,21 @@ def pkk6_search(cnum, pkklink, cnumid):
             pass
         
         try:
-            urllib.request.urlretrieve(imgURL, os.path.dirname(__file__) + 'pkk6' + '.png')
+            urllib.request.urlretrieve(imgURL, os.path.abspath(__file__)  + '.png')
         except:
             QMessageBox.information(iface.mainWindow(),
                                     cnum,
                                     'HTTP Error 503 | Для загрузки растра повторите ввод')
-            os.remove(os.path.dirname(__file__) + 'pkk6' + '.png')
+            os.remove(os.path.abspath(__file__)  + '.png')
         
-        if os.path.exists(os.path.dirname(__file__) + 'pkk6' + '.png'):        
-            rast = gdal.Open(os.path.dirname(__file__) + 'pkk6' + '.png')                
-            with open (os.path.dirname(__file__) + 'pkk6' + '.pgw', 'w') as target:
+        if os.path.exists(os.path.abspath(__file__)  + '.png'):        
+            rast = gdal.Open(os.path.abspath(__file__)  + '.png')                
+            with open (os.path.abspath(__file__)  + '.pgw', 'w') as target:
                 pxs = str((float(xmax) - float(xmin)) / int(rast.RasterXSize))    
                 xminpng = str(xmin + float(pxs) / 2)   
                 ymaxpng = str(ymax - float(pxs) / 2)
                 target.write(pxs + '\n' + '0\n0\n' + '-' + pxs + '\n'+ xminpng + '\n' + ymaxpng)                    
-            rastlr = iface.addRasterLayer(os.path.dirname(__file__) + 'pkk6' + '.png', 'pkk6_raster')                
+            rastlr = iface.addRasterLayer(os.path.abspath(__file__)  + '.png', 'pkk6_raster')                
             rastlr.setCrs(QgsCoordinateReferenceSystem('EPSG:3857'))               
             if '/1/' in pkklink:
                 rastlr.renderer().setOpacity(0.5)
