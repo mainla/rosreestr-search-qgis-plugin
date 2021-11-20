@@ -40,24 +40,22 @@ class Pkk6Search:
                 input, ok = QInputDialog.getText( QInputDialog(), 
                     "Найти на Публичной кадастровой карте", 
                     "Введите кадастровый номер ЗУ или ОКС")
-        if ok:
+        if ok:            
             for layer in QgsProject.instance().mapLayers().values():
                 if layer.name()=='pkk6_raster':
                     QgsProject.instance().removeMapLayers( [layer.id()] )
             for layer in QgsProject.instance().mapLayers().values():
                 if layer.name()=='pkk6_poi':
-                    QgsProject.instance().removeMapLayers( [layer.id()] ) 
+                    QgsProject.instance().removeMapLayers( [layer.id()] )
+            cnum = str(input.strip())       
+            cnumid = re.sub(':0{1,6}', ':', (str(input.strip()).lstrip('0'))) 
             if (len(str((requests.get('https://pkk.rosreestr.ru/api/features/1/' 
-                + str(re.sub(':0{1,6}', ':', str(input.strip())))).json()['feature'])))) > 20:
+                + str(re.sub(':0{1,6}', ':', (str(input.strip()).lstrip('0'))))).json()['feature'])))) > 20:
                 pkklink = ('https://pkk.rosreestr.ru/api/features/1/' 
-                    + str(re.sub(':0{1,6}', ':', str(input.strip())))) 
-                cnum = str(input.strip())
-                cnumid = re.sub(':0{1,6}', ':', cnum)           
+                    + str(re.sub(':0{1,6}', ':', (str(input.strip()).lstrip('0')))))          
                 pkk6_search(cnum, pkklink, cnumid)            
             elif isinstance(requests.get('https://pkk.rosreestr.ru/api/features/1/' 
-                + str(re.sub(':0{1,6}', ':', str(input.strip())))).json()['feature'], type(None)):
+                + str(re.sub(':0{1,6}', ':', (str(input.strip()).lstrip('0'))))).json()['feature'], type(None)):
                 pkklink = ('https://pkk.rosreestr.ru/api/features/5/' 
-                    + str(re.sub(':0{1,6}', ':', str(input.strip())))) 
-                cnum = str(input.strip())
-                cnumid = re.sub(':0{1,6}', ':', cnum)
+                    + str(re.sub(':0{1,6}', ':', (str(input.strip()).lstrip('0'))))) 
                 pkk6_search(cnum, pkklink, cnumid)

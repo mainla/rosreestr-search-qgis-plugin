@@ -15,10 +15,10 @@ def pkk6_search(cnum, pkklink, cnumid):
     
     if isinstance(q['feature'], type(None)):
         QMessageBox.information(iface.mainWindow(),
-            cnum,
+            cnumid,
             'Ошибка ввода или объект отсутствует в ПКК')                
     else:        
-        adr = str(((q['feature'])['attrs'])['address'])            
+        adr = str(((q['feature'])['attrs'])['address'])[:254]            
         c = (((q['feature']))['center'])
              
         if isinstance(c, dict):
@@ -83,32 +83,31 @@ def pkk6_search(cnum, pkklink, cnumid):
             imgURL = 'https://pkk.rosreestr.ru/arcgis/rest/services/PKK6/CadastreSelected/MapServer/export?bbox={},{},{},{}&bboxSR=102100&imageSR=102100&size={},{}&dpi=96&format=png32&transparent=true&layers=show:6,7,8,9&layerDefs=%7B%226%22:%22ID%20=%20%27{}%27%22,%227%22:%22ID%20=%20%27{}%27%22,%228%22:%22ID%20=%20%27{}%27%22,%229%22:%22ID%20=%20%27{}%27%22%7D&f=image'.format(xmin, ymin, xmax, ymax, img_size_x, img_size_y, cnumid, cnumid, cnumid, cnumid)
         elif '/5/' in pkklink:
             imgURL = 'https://pkk.rosreestr.ru/arcgis/rest/services/PKK6/CadastreSelected/MapServer/export?bbox={},{},{},{}&bboxSR=102100&imageSR=102100&size={},{}&dpi=96&format=png32&transparent=true&layers=show:0,1,2,3,4,5&layerDefs=%7B%220%22%3A%22ID%20%3D%20%27{}%27%22%2C%221%22%3A%22ID%20%3D%20%27{}%27%22%2C%222%22%3A%22ID%20%3D%20%27{}%27%22%2C%223%22%3A%22ID%20%3D%20%27{}%27%22%2C%224%22%3A%22ID%20%3D%20%27{}%27%22%2C%225%22%3A%22ID%20%3D%20%27{}%27%22%7D&f=image'.format(xmin, ymin, xmax, ymax, img_size_x, img_size_y, cnumid, cnumid, cnumid, cnumid, cnumid, cnumid)
-        else:
-            pass
+
+        if os.path.exists(os.path.abspath(__file__) + 'pkk6' + '.png'):
+            os.remove(os.path.abspath(__file__) + 'pkk6' + '.png')
         
         try:
             urllib.request.urlretrieve(imgURL, os.path.abspath(__file__) + 'pkk6' + '.png')
+            if os.path.exists(os.path.abspath(__file__) + 'pkk6' + '.png'):        
+                rast = gdal.Open(os.path.abspath(__file__) + 'pkk6' + '.png')                
+                with open (os.path.abspath(__file__) + 'pkk6' + '.pgw', 'w') as target:
+                    pxs = str((float(xmax) - float(xmin)) / int(rast.RasterXSize))    
+                    xminpng = str(xmin + float(pxs) / 2)   
+                    ymaxpng = str(ymax - float(pxs) / 2)
+                    target.write(pxs + '\n' + '0\n0\n' + '-' + pxs + '\n'+ xminpng + '\n' + ymaxpng)                    
+                rastlr = iface.addRasterLayer(os.path.abspath(__file__) + 'pkk6' + '.png', 'pkk6_raster')                
+                rastlr.setCrs(QgsCoordinateReferenceSystem('EPSG:3857'))               
+                if '/1/' in pkklink:
+                    rastlr.renderer().setOpacity(0.5)
+                elif '/5/' in pkklink:
+                    rastlr.renderer().setOpacity(0.5)
+                    rastlr.renderer().setRedBand(1)
+                    rastlr.renderer().setBlueBand(0)
+                    rastlr.renderer().setGreenBand(0)
         except:
             QMessageBox.information(iface.mainWindow(),
                                     cnum,
                                     'HTTP Error 503 | Для загрузки растра повторите ввод')
-            os.remove(os.path.abspath(__file__) + 'pkk6' + '.png')
-        
-        if os.path.exists(os.path.abspath(__file__) + 'pkk6' + '.png'):        
-            rast = gdal.Open(os.path.abspath(__file__) + 'pkk6' + '.png')                
-            with open (os.path.abspath(__file__) + 'pkk6' + '.pgw', 'w') as target:
-                pxs = str((float(xmax) - float(xmin)) / int(rast.RasterXSize))    
-                xminpng = str(xmin + float(pxs) / 2)   
-                ymaxpng = str(ymax - float(pxs) / 2)
-                target.write(pxs + '\n' + '0\n0\n' + '-' + pxs + '\n'+ xminpng + '\n' + ymaxpng)                    
-            rastlr = iface.addRasterLayer(os.path.abspath(__file__) + 'pkk6' + '.png', 'pkk6_raster')                
-            rastlr.setCrs(QgsCoordinateReferenceSystem('EPSG:3857'))               
-            if '/1/' in pkklink:
-                rastlr.renderer().setOpacity(0.5)
-            elif '/5/' in pkklink:
-                rastlr.renderer().setOpacity(0.5)
-                rastlr.renderer().setRedBand(1)
-                rastlr.renderer().setBlueBand(0)
-                rastlr.renderer().setGreenBand(0)
-            
+    
     iface.mapCanvas().refresh() 
