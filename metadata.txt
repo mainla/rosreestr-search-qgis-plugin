@@ -11,7 +11,7 @@ email=matmatamail@gmail.com
 
 experimental=True
 
-icon=iicon.png
+icon=icon.png
 tags=web
 homepage=https://github.com/matmatamat/rosreestr-search-qgis-plugin
 tracker=https://github.com/matmatamat/rosreestr-search-qgis-plugin/issues
