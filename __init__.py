@@ -48,14 +48,12 @@ class Pkk6Search:
                 if layer.name()=='pkk6_poi':
                     QgsProject.instance().removeMapLayers( [layer.id()] )
             cnum = str(input.strip())       
-            cnumid = re.sub(':0{1,6}', ':', (str(input.strip()).lstrip('0'))) 
+            cnumid = re.sub(':0{1,6}', ':', (str(input.strip()).lstrip('0'))).replace('::', ':0:')  
             if (len(str((requests.get('https://pkk.rosreestr.ru/api/features/1/' 
-                + str(re.sub(':0{1,6}', ':', (str(input.strip()).lstrip('0'))))).json()['feature'])))) > 20:
-                pkklink = ('https://pkk.rosreestr.ru/api/features/1/' 
-                    + str(re.sub(':0{1,6}', ':', (str(input.strip()).lstrip('0')))))          
+                + str(cnumid)).json()['feature'])))) > 20:
+                pkklink = ('https://pkk.rosreestr.ru/api/features/1/' + cnumid)          
                 pkk6_search(cnum, pkklink, cnumid)            
             elif isinstance(requests.get('https://pkk.rosreestr.ru/api/features/1/' 
-                + str(re.sub(':0{1,6}', ':', (str(input.strip()).lstrip('0'))))).json()['feature'], type(None)):
-                pkklink = ('https://pkk.rosreestr.ru/api/features/5/' 
-                    + str(re.sub(':0{1,6}', ':', (str(input.strip()).lstrip('0'))))) 
+                + str(cnumid)).json()['feature'], type(None)):
+                pkklink = ('https://pkk.rosreestr.ru/api/features/5/' + cnumid) 
                 pkk6_search(cnum, pkklink, cnumid)

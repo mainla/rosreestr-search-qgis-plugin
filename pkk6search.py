@@ -16,12 +16,16 @@ def pkk6_search(cnum, pkklink, cnumid):
     if isinstance(q['feature'], type(None)):
         QMessageBox.information(iface.mainWindow(),
             cnumid,
-            'Ошибка ввода или объект отсутствует в ПКК')                
+            'Ошибка ввода или объект отсутствует в ПКК') 
+    elif 'center' not in q['feature'] or (q['feature']['center']) == None: 
+        QMessageBox.information(iface.mainWindow(),
+            cnumid,
+            'Без координат границ')     
     else:        
         adr = str(((q['feature'])['attrs'])['address'])[:254]            
-        c = (((q['feature']))['center'])
+        c = (q['feature']['center'])
              
-        if isinstance(c, dict):
+        if isinstance(c, dict) :
             global X
             X = c['x']
             global Y
