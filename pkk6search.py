@@ -8,10 +8,11 @@ from osgeo import gdal
 from PyQt5.QtWidgets import QMessageBox
 from qgis.utils import iface
 from qgis.core import *
+import ssl
 
 def pkk6_search(cnum, pkklink, cnumid):
    
-    q = requests.get(pkklink).json()
+    q = requests.get(pkklink, verify=False).json()
     
     if isinstance(q['feature'], type(None)):
         QMessageBox.information(iface.mainWindow(),
@@ -66,9 +67,9 @@ def pkk6_search(cnum, pkklink, cnumid):
             
         meml.commitChanges()
             
-        img_size_x = float(xmax) - float(xmin)
+        img_size_x = round(float(xmax) - float(xmin))
             
-        img_size_y = float(ymax) - float(ymin)
+        img_size_y = round(float(ymax) - float(ymin))
             
         if str(meml.crs()) != str(QgsProject.instance().crs()):
             sourceCrs = QgsCoordinateReferenceSystem(meml.crs())
@@ -92,6 +93,7 @@ def pkk6_search(cnum, pkklink, cnumid):
             os.remove(os.path.abspath(__file__) + 'pkk6' + '.png')
         
         try:
+            ssl._create_default_https_context = ssl._create_unverified_context
             urllib.request.urlretrieve(imgURL, os.path.abspath(__file__) + 'pkk6' + '.png')
             if os.path.exists(os.path.abspath(__file__) + 'pkk6' + '.png'):        
                 rast = gdal.Open(os.path.abspath(__file__) + 'pkk6' + '.png')                
