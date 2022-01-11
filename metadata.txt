@@ -8,7 +8,7 @@ qgisMinimumVersion=3.0
 author=matmatamat
 email=matmatamail@gmail.com
 
-experimental=True
+experimental=False
 
 icon=icon.png
 tags=web
