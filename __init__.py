@@ -50,10 +50,10 @@ class Pkk6Search:
             cnum = str(input.strip())       
             cnumid = re.sub(':0{1,6}', ':', (str(input.strip()).lstrip('0'))).replace('::', ':0:')  
             if (len(str((requests.get('https://pkk.rosreestr.ru/api/features/1/' 
-                + str(cnumid)).json()['feature'])))) > 20:
+                + str(cnumid), verify=False).json()['feature'])))) > 20:
                 pkklink = ('https://pkk.rosreestr.ru/api/features/1/' + cnumid)          
                 pkk6_search(cnum, pkklink, cnumid)            
             elif isinstance(requests.get('https://pkk.rosreestr.ru/api/features/1/' 
-                + str(cnumid)).json()['feature'], type(None)):
+                + str(cnumid), verify=False).json()['feature'], type(None)):
                 pkklink = ('https://pkk.rosreestr.ru/api/features/5/' + cnumid) 
                 pkk6_search(cnum, pkklink, cnumid)
