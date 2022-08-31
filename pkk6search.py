@@ -123,7 +123,7 @@ def pkk6_search(cnum, pkklink, cnumid, q):
                         rastlr.renderer().setBlueBand(0)
                         rastlr.renderer().setGreenBand(0)
                     loop = False
-            except:
+            except Exception:
                 cou += 1
                 loop = True
             if cou == 60:
@@ -188,6 +188,9 @@ class Pkk6Search:
                         pkk6_search(cnum, pkklink, cnumid, q)
                     loop = False
             except requests.exceptions.SSLError:
+                cou += 1
+                loop = True
+            except requests.exceptions.ConnectionError:
                 cou += 1
                 loop = True
             if cou == 60:
