@@ -38,12 +38,12 @@ def pkk6_search(cnum, pkklink, cnumid, q):
             X = c['x']
             global Y
             Y = c['y']     
-        elif isinstance(c, type(None)):
-            QMessageBox.information(iface.mainWindow(),
-                            cnum,
-                            'Без координат границ')
-       else:
-            QMessageBox.information(iface.mainWindow(),
+            elif isinstance(c, type(None)):
+                QMessageBox.information(iface.mainWindow(),
+                                cnum,
+                                'Без координат границ')
+            else:
+                QMessageBox.information(iface.mainWindow(),
                                 cnum,
                                 'Что-то пошло не так')        
 
