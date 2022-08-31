@@ -150,8 +150,7 @@ class Pkk6Search:
     def unload(self):
         self.iface.removeToolBarIcon(self.action)
         del self.action
-
-      
+        
     def run(self):
         input, ok = QInputDialog.getText(QInputDialog(),
             "Найти на Публичной кадастровой карте",
@@ -173,7 +172,8 @@ class Pkk6Search:
                         if layer.name()=='pkk6_poi':
                             QgsProject.instance().removeMapLayers( [layer.id()] )
                               
-                    cnum = str(input.strip())      
+                    cnum = str(input.strip())
+                    
                     cnumid = re.sub(':0{1,6}', ':', (str(input.strip()).lstrip('0'))).replace('::', ':0:') 
                      
                     if (len(str((requests.get('https://pkk.rosreestr.ru/api/features/1/'
