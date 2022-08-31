@@ -1,6 +1,6 @@
-# Licensed under the terms of GNU GPL 2
-# Thanks to Matin Dobias for the 'QGIS Minimalist Plugin Skeleton'
 # -*- coding: utf -8 -*-
+# Licensed under the terms of GNU GPL 2
+# Thanks to Martin Dobias for the 'QGIS Minimalist Plugin Skeleton'
 
 import os
 import re
