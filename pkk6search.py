@@ -16,7 +16,16 @@ from PyQt5.QtWidgets import (
 )   
 from qgis.PyQt.QtGui import QIcon
 from qgis.utils import iface
-from qgis.core import *
+from qgis.core import (
+    QgsPointXY,
+    QgsVectorLayer,
+    QgsProject,
+    QgsFeature,
+    QgsGeometry,
+    QgsCoordinateReferenceSystem,
+    QgsCoordinateTransform,
+    QgsRectangle   
+)
 
 
 def pkk6_search(cnum, pkklink, cnumid, q):
