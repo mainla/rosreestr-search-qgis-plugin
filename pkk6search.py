@@ -106,7 +106,7 @@ def pkk6_search(cnum, pkklink, cnumid, q):
             try:
                 ssl._create_default_https_context = ssl._create_unverified_context
                 urllib.request.urlretrieve(imgURL, os.path.abspath(__file__) + 'pkk6' + '.png')
-               if os.path.exists(os.path.abspath(__file__) + 'pkk6' + '.png'):       
+                if os.path.exists(os.path.abspath(__file__) + 'pkk6' + '.png'):       
                     rast = gdal.Open(os.path.abspath(__file__) + 'pkk6' + '.png')               
                     with open (os.path.abspath(__file__) + 'pkk6' + '.pgw', 'w') as target:
                         pxs = str((float(xmax) - float(xmin)) / int(rast.RasterXSize))   
