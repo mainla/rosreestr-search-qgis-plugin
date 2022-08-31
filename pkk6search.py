@@ -139,7 +139,7 @@ def pkk6_search(cnum, pkklink, cnumid, q):
                 QMessageBox.information(iface.mainWindow(),
                                         cnum,
                                         'Превышено количество запросов')
-
+                
     iface.mapCanvas().refresh()
 
     
