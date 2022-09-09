@@ -169,40 +169,41 @@ class Pkk6Search:
                 input, ok = QInputDialog.getText( QInputDialog(),
                     "Найти на Публичной кадастровой карте",
                     "Введите кадастровый номер ЗУ или ОКС")
-        loop= True
-        cou = 0
-        while loop and cou < 60:
-            try:                       
-                if ok:           
-                    for layer in QgsProject.instance().mapLayers().values():
-                        if layer.name()=='pkk6_raster':
-                            QgsProject.instance().removeMapLayers( [layer.id()] )
-                    for layer in QgsProject.instance().mapLayers().values():
-                        if layer.name()=='pkk6_poi':
-                            QgsProject.instance().removeMapLayers( [layer.id()] )
-                              
-                    cnum = str(input.strip())
-                    
-                    cnumid = re.sub(':0{1,6}', ':', (str(input.strip()).lstrip('0'))).replace('::', ':0:') 
-                     
-                    if (len(str((requests.get('https://pkk.rosreestr.ru/api/features/1/'
-                        + str(cnumid), verify=False).json()['feature'])))) > 20:
-                        pkklink = ('https://pkk.rosreestr.ru/api/features/1/' + cnumid)
-                        q = requests.get(pkklink, verify=False).json()               
-                        pkk6_search(cnum, pkklink, cnumid, q)           
-                    elif isinstance(requests.get('https://pkk.rosreestr.ru/api/features/1/'
-                        + str(cnumid), verify=False).json()['feature'], type(None)):
-                        pkklink = ('https://pkk.rosreestr.ru/api/features/5/' + cnumid)
-                        q = requests.get(pkklink, verify=False).json()
-                        pkk6_search(cnum, pkklink, cnumid, q)
-                    loop = False
-            except requests.exceptions.SSLError:
-                cou += 1
-                loop = True
-            except requests.exceptions.ConnectionError:
-                cou += 1
-                loop = True
-            if cou == 60:
-                QMessageBox.information(iface.mainWindow(),
-                str(cou),
-                'Превышено количество запросов.')
+        if input != '' and ok == True:
+            loop= True
+            cou = 0
+            while loop and cou < 60:
+                try:                       
+                    if ok:           
+                        for layer in QgsProject.instance().mapLayers().values():
+                            if layer.name()=='pkk6_raster':
+                                QgsProject.instance().removeMapLayers( [layer.id()] )
+                        for layer in QgsProject.instance().mapLayers().values():
+                            if layer.name()=='pkk6_poi':
+                                QgsProject.instance().removeMapLayers( [layer.id()] )
+
+                        cnum = str(input.strip())
+
+                        cnumid = re.sub(':0{1,6}', ':', (str(input.strip()).lstrip('0'))).replace('::', ':0:') 
+
+                        if (len(str((requests.get('https://pkk.rosreestr.ru/api/features/1/'
+                            + str(cnumid), verify=False).json()['feature'])))) > 20:
+                            pkklink = ('https://pkk.rosreestr.ru/api/features/1/' + cnumid)
+                            q = requests.get(pkklink, verify=False).json()               
+                            pkk6_search(cnum, pkklink, cnumid, q)           
+                        elif isinstance(requests.get('https://pkk.rosreestr.ru/api/features/1/'
+                            + str(cnumid), verify=False).json()['feature'], type(None)):
+                            pkklink = ('https://pkk.rosreestr.ru/api/features/5/' + cnumid)
+                            q = requests.get(pkklink, verify=False).json()
+                            pkk6_search(cnum, pkklink, cnumid, q)
+                        loop = False
+                except requests.exceptions.SSLError:
+                    cou += 1
+                    loop = True
+                except requests.exceptions.ConnectionError:
+                    cou += 1
+                    loop = True
+                if cou == 60:
+                    QMessageBox.information(iface.mainWindow(),
+                    str(cou),
+                    'Превышено количество запросов.')
