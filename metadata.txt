@@ -1,11 +1,11 @@
 [general]
-name=rosreestr-search-qgis-plugin
+name=rosreestr1
 description=Rosreestr search qgis plugin
 about=Search to Public Cadastral Map of Rosreestr - https://pkk.rosreestr.ru
       Поиск по Публичной кадастровой карте (ЗУ, ОКС)
-version=1.7
+version=2.0a
 qgisMinimumVersion=3.0
-author=matmatamat
+author=matmatamat+mainla
 email=matmatamail@gmail.com
 
 experimental=True
